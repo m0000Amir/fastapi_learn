@@ -60,3 +60,7 @@ async def create_comment(
         "v": v,
         "comment_id":  comment_id
     }
+
+
+def required_functionality():
+    return {"message": "Learning FastAPI is important"}
