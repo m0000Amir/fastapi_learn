@@ -3,9 +3,11 @@ ORM functionality
 
 """
 
-from pydantic.networks import import_email_validator
+from fastapi.exceptions import HTTPException
+from fastapi import status
 from sqlalchemy.orm.session import Session
-from router.blog_post import required_functionality
+# from starlette import status
+
 
 
 from schemas import UserBase, UserDisplay
@@ -33,12 +35,19 @@ def get_all_users(db: Session):
 
 # read only one user
 def get_user(db: Session, id: int):
-    return db.query(DbUser).filter(DbUser.id == id).first()
+    user = db.query(DbUser).filter(DbUser.id == id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Article with id {id} not found")
+    return user
 
 
 # update user
 def update_user(db: Session, id: int, request: UserBase):
     user = db.query(DbUser).filter(DbUser.id == id)
+    if not user.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Article with id {id} not found")
     user.update({
         DbUser.username: request.username,
         DbUser.email: request.email,
@@ -51,6 +60,9 @@ def update_user(db: Session, id: int, request: UserBase):
 # delete user
 def delete_user(db: Session, id: int):
     user = db.query(DbUser).filter(DbUser.id == id).first()
+    if not user.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Article with id {id} not found")
     db.delete(user)
     db.commit()
     return "ok"

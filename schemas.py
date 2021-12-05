@@ -1,11 +1,10 @@
 """
-Shema definition
+Schema definition
 
 """
 from typing import List
 from pydantic import BaseModel
 from pydantic.networks import stricturl
-
 
 
 class Article(BaseModel):
@@ -15,7 +14,6 @@ class Article(BaseModel):
     published: bool
     class Config():
         orm_mode = True
-
 
 
 class UserBase(BaseModel):
@@ -30,6 +28,7 @@ class UserDisplay(BaseModel):
     items: List[Article] = []
     class Config():
         orm_mode = True
+
 
 # User inside ArticleDisplay
 class User(BaseModel):
@@ -53,3 +52,4 @@ class ArticleDisplay(BaseModel):
     user: User
     class Config():
         orm_mode = True
+
