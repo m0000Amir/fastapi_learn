@@ -43,6 +43,7 @@ def get_user(db: Session, id: int):
 
 
 def get_user_by_username(db: Session, username: str):
+
     user = db.query(DbUser).filter(DbUser.username == username).first()
     if not user:
         raise HTTPException(

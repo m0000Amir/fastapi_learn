@@ -27,8 +27,7 @@ async def get_blogs(page=1, page_size: Optional[int]=None,
     return {"message": f"All {page_size} blogs on page {page}"}
 
 
-@router.get(
-    "/blog/{id}/comments/{comment_id}", tags=["comment"])
+@router.get("/blog/{id}/comments/{comment_id}", tags=["comment"])
 async def get_comment(id: int, comment_id: int, valid: bool = True, 
                       username: Optional[str] = None, 
                       req_parameter: dict = Depends(required_functionality)):
@@ -36,9 +35,7 @@ async def get_comment(id: int, comment_id: int, valid: bool = True,
                        f"valid {valid}, username {username}"}
 
 
-@router.get(
-    "/blog/{id}", 
-    status_code=status.HTTP_200_OK)
+@router.get("/blog/{id}", status_code=status.HTTP_200_OK)
 async def get_blog(id: int, response: Response, 
                    req_parameter: dict = Depends(required_functionality)):
     if id > 5:
