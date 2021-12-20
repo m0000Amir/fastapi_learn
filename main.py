@@ -13,6 +13,8 @@ from auth import authentification
 from db import models
 from db.database import engine
 from fastapi.staticfiles import StaticFiles
+from templates import templates
+
 
 app = FastAPI()
 app.include_router(authentification.router)
@@ -22,6 +24,7 @@ app.include_router(blog_post.router)
 app.include_router(user.router)
 app.include_router(article.router)
 app.include_router(product.router)
+app.include_router(templates.router)
 
 
 
@@ -53,6 +56,9 @@ origins = [
 
 
 app.mount("/files", StaticFiles(directory="files"), name="files")
+app.mount("/templates/static", 
+          StaticFiles(directory="templates/static"),
+          name="static")   
 
 
 if __name__ == "__main__":
