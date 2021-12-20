@@ -17,7 +17,8 @@ router = APIRouter(
 @router.post("/token")
 def get_token(request: OAuth2PasswordRequestForm = Depends(),
               db: Session = Depends(get_db)):
-    user = db.query(models.DbUser).filter(models.DbUser.username == request.username).first()
+    user = db.query(models.DbUser).filter(
+        models.DbUser.username == request.username).first()
     if not user:     
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Invalid credentials")
@@ -25,7 +26,6 @@ def get_token(request: OAuth2PasswordRequestForm = Depends(),
         
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
                             detail="Incorrect password")
-    
 
     access_token = oauth2.create_access_token(
         data={"sub": user.username}
