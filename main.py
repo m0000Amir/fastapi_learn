@@ -10,6 +10,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 from exceptions import StoryException
 from router import blog_get, blog_post, user, article, product, file
+from router import dependencies
 from auth import authentification
 from db import models
 from db.database import engine
@@ -29,6 +30,8 @@ app.include_router(user.router)
 app.include_router(article.router)
 app.include_router(product.router)
 app.include_router(templates.router)
+app.include_router(dependencies.router)
+
 
 
 
