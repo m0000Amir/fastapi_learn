@@ -1,9 +1,8 @@
-from fastapi import APIRouter
-from fastapi import responses
+from fastapi import APIRouter, BackgroundTasks
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from starlette.requests import Request
-
+from custom_log import log
 from schemas import ProductBase
 
 
@@ -18,7 +17,9 @@ templates = Jinja2Templates(directory="templates")
 @router.post("/product/{id}", response_class=HTMLResponse)
 def get_product(id: str, 
                 product: ProductBase,
-                request: Request):
+                request: Request,
+                bt: BackgroundTasks):
+    bt.add_task(log_template_call, f"Template read for product with id {id}")
     return templates.TemplateResponse(
         "product.html",
         {
@@ -30,3 +31,7 @@ def get_product(id: str,
         }
 
     )
+
+
+def log_template_call(message: str):
+    log("MyAPI", message)
